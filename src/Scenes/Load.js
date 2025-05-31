@@ -14,8 +14,6 @@ class Load extends Phaser.Scene {
         this.load.image("pixels-bg", "/tilemaps/pixels-bg.png");
         this.load.image("pixels-char", "/tilemaps/pixels-char.png");
         this.load.image("pixels-gen", "/tilemaps/pixels-gen.png");
-        this.load.image("roguelike_color", "/tilemaps/roguelike_color.png");
-        this.load.image("roguelike_monochrome", "/tilemaps/roguelike_monochrome.png");
         this.load.image("tinyski", "/tilemaps/tinyski.png");
 
         console.log("load full level tilemap");
@@ -28,15 +26,31 @@ class Load extends Phaser.Scene {
         this.load.image("you_stand", "/you/tile_0000.png");
         this.load.image("you_walk", "/you/tile_0001.png");
 
-        /*// BRING THESE BACK
+        console.log("load memories");
+        this.load.image("heart_1", "heart.png");
+        this.load.image("heart_2", "heartbeat.png");
+        this.load.image("burger", "burger.png");
+        this.load.image("puzzle", "puzzle.png");
+
+        this.load.bitmapFont("font", "font.png", "font.xml");
+        this.load.image("r", "r.png");
+        this.load.image("redo", "redo.png");
+
+        console.log("load particles");
+        this.load.image("walk_vfx", "bubbles.png");
+        this.load.image("jump_vfx", "tear.png");
+
+        // BRING THESE BACK
         console.log("load audio");
         this.load.audio("walk_sfx", "walk_sfx.mp3");
         this.load.audio("bgm", "nofu.mp3");
-        */
+        this.load.audio("collectsfx", "got_1.mp3");
+        this.load.audio("found", "found_1.mp3");
+        
     }
 
     create() {
-        console.log("load our animations");
+        // load our animations
         this.anims.create({
             key: 'meWalk',
             frames: [{key: "me_walk", frame: 0},
@@ -77,7 +91,15 @@ class Load extends Phaser.Scene {
             key: 'youJump',
             frames: [{key: "you_walk", frame: 0}],
             repeat: -1
-        });        
+        });
+
+        // load memory animations
+        this.anims.create({
+            key: 'heart',
+            frames: [{key: "heart_1", frame: 0, duration: 1100},
+                     {key: "heart_2", frame: 0, duration: 600}],
+            repeat: -1
+        });
 
          console.log("preload done");
          console.log("start game");

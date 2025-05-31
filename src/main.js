@@ -18,8 +18,8 @@ let config = {
             }
         }
     },
-    width: 1600,
-    height: 850,
+    width: 1770,
+    height: 952,
     scene: [Load, Platformer]
 }
 
