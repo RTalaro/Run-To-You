@@ -196,7 +196,7 @@ class Platformer extends Phaser.Scene {
     }
 
     update() {
-        console.log(my.sprite.you.x, my.sprite.you.y);
+        //console.log(my.sprite.you.x, my.sprite.you.y);
         if((cursors.left.isDown || this.keyA.isDown) && !this.midAnim){        // if moving left
             my.sprite.player.body.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.setFlip(true, false);
@@ -310,8 +310,8 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.y = this.respawny;
         }
 
-        console.log("stage", this.stage);
-        console.log("memory", this.memories);
+        //console.log("stage", this.stage);
+        //console.log("memory", this.memories);
     }
 
     respawnYouAt(x, y){
