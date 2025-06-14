@@ -32,9 +32,22 @@ class Platformer extends Phaser.Scene {
 
 
     create() {
+        // add bgm + sfx
+        this.bgm = this.sound.add("bgm", {loop: true});
+        this.bgm.setVolume(.1);
+        this.walksfx = this.sound.add("walk_sfx", {loop: true});
+        this.foundsfx = this.sound.add("found", {loop: false, volume: 1.25});
+        this.collectsfx = this.sound.add("collectsfx", {loop: false, volume: .4});
+        this.bgm.play();
+        this.walksfx.play();
+        this.walksfx.pause();
+
         // create tilemap of 144x144 px tiles at 100 x 20 tiles
         this.bg = this.add.tilemap("level1", 144, 144, 100, 20);
         this.map = this.add.tilemap("level1", 144, 144, 100, 20);
+       
+        // add animated tiles
+        this.animatedTiles.init(this.map);
 
         // add tilesets: Tiled name, tilesheet key from Load.js
         this.farmTileset = this.map.addTilesetImage("farm", "farm");
@@ -149,32 +162,23 @@ class Platformer extends Phaser.Scene {
         my.sprite.you.body.setMaxVelocity(300);
         this.physics.add.collider(my.sprite.you, this.platformLayer);
 
+        let end = false;
         this.physics.add.overlap(my.sprite.player, my.sprite.you, (obj1, obj2) => {
-            my.sprite.player.setAccelerationX(0);
-            my.sprite.player.setMaxVelocity(0);
-            this.collect = this.add.bitmapText(8500, 500, "font", "WE WON :)", 50).setOrigin(.5);
-            my.sprite.you.setAccelerationX(0);
-            my.sprite.you.setMaxVelocity(0);
-            this.add.sprite(8600, 620, "redo").setScale(2);
-            this.add.sprite(8600, 645, "r").setScale(1);
-            my.sprite.you.anims.play("youStand");
-            my.sprite.player.anims.play("meStand");
+            if(!end){
+                my.sprite.player.setAccelerationX(0);
+                my.sprite.player.setMaxVelocity(0);
+                this.collect = this.add.bitmapText(8500, 500, "font", "WE WON :)", 50).setOrigin(.5);
+                my.sprite.you.setAccelerationX(0);
+                my.sprite.you.setMaxVelocity(0);
+                this.add.sprite(8600, 620, "redo").setScale(2);
+                this.add.sprite(8600, 645, "r").setScale(1);
+                my.sprite.you.anims.play("youStand");
+                my.sprite.player.anims.play("meStand");
+                this.foundsfx.setSeek(0);
+                this.foundsfx.play();
+                end = true;
+            }
         });
-
-        // BRING THESE BACK
-        // add bgm + sfx
-        this.bgm = this.sound.add("bgm", {loop: true});
-        this.bgm.setVolume(.1);
-        this.walksfx = this.sound.add("walk_sfx", {loop: true});
-        this.foundsfx = this.sound.add("found", {loop: false, volume: 1.25});
-        this.collectsfx = this.sound.add("collectsfx", {loop: false, volume: .4});
-        this.bgm.play();
-        this.walksfx.play();
-        this.walksfx.pause();
-        
-       
-        // add animated tiles
-        this.animatedTiles.init(this.map);
 
         // add camera
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels*0.3, this.map.heightInPixels*0.3);
