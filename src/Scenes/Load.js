@@ -4,7 +4,7 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-        this.load.setPath("./assetsNEW/");
+        this.load.setPath("./assets/");
 
         console.log("load packed tilemaps");
         this.load.image("farm", "/tilemaps/farm.png");
@@ -40,7 +40,6 @@ class Load extends Phaser.Scene {
         this.load.image("walk_vfx", "bubbles.png");
         this.load.image("jump_vfx", "tear.png");
 
-        // BRING THESE BACK
         console.log("load audio");
         this.load.audio("walk_sfx", "walk_sfx.mp3");
         this.load.audio("bgm", "nofu.mp3");
@@ -63,7 +62,6 @@ class Load extends Phaser.Scene {
             key: 'meStand',
             frames: [{key: "me_stand", frame: 0}],
             duration: 300
-            //repeat: -1
         });
 
         this.anims.create({

@@ -28,7 +28,7 @@ class Platformer extends Phaser.Scene {
     // - add memory UI (done)
     // - add game win (done)
     // - your behavior: just running (done)
-    // - fix reset indicator and trail, add star by face
+    // - fix reset indicator and trail (done)
 
 
     create() {
@@ -71,7 +71,7 @@ class Platformer extends Phaser.Scene {
         my.sprite.player.body.setMaxVelocity(300);
         this.physics.add.collider(my.sprite.player, this.layerLayer);
         this.physics.add.collider(my.sprite.player, this.platformLayer);
-        my.vfx.walk = this.add.particles(0,0, "walk_vfx", {
+        my.vfx.walk = this.add.particles(0, 0, "walk_vfx", {
             random: true,
             scale: {start: .1, end: .25},
             maxAliveParticles: 8,
@@ -80,8 +80,7 @@ class Platformer extends Phaser.Scene {
         });
         my.vfx.walk.stop();
         
-        my.vfx.jump = this.add.particles(0,0, "jump_vfx", {
-            //random: true,
+        my.vfx.jump = this.add.particles(0, 0, "jump_vfx", {
             scale: {start: .1, end: .1},
             maxAliveParticles: 4,
             lifespan: 200,
@@ -93,7 +92,7 @@ class Platformer extends Phaser.Scene {
         
         // add memories
         this.myHeartMemory = this.physics.add.sprite(2600, 460, "heart_1").setScale(.2);
-        this.myHeartMemory.play('heart');
+        this.myHeartMemory.anims.play('heart');
         this.myHeartMemory.setMaxVelocity(0);
         this.physics.add.overlap(my.sprite.player, this.myHeartMemory, (obj1, obj2) => {
             this.collectsfx.play();
@@ -130,6 +129,7 @@ class Platformer extends Phaser.Scene {
         this.yourHeartMemory.play('heart');
         this.yourHeartMemory.setMaxVelocity(0);
         this.physics.add.overlap(my.sprite.player, this.yourHeartMemory, (obj1, obj2) => {
+            this.midAnim = 1;
             this.collectsfx.play();
             this.memories++;
             this.respawnx = my.sprite.player.x;
@@ -137,9 +137,11 @@ class Platformer extends Phaser.Scene {
             obj2.destroy();
             this.collect = this.add.bitmapText(8272, 411-50, "font", this.found[3], 50).setOrigin(.5);
             my.sprite.you.anims.play("youWalk");
-            my.sprite.you.setAccelerationX(-20);
+            my.sprite.you.setAccelerationX(-50);
             my.sprite.you.setMaxVelocity(20);
             my.sprite.player.setDepth(1);
+            my.sprite.player.anims.play("meStand");
+            my.sprite.player.setAccelerationX(0);
         });
 
         // add you
@@ -162,9 +164,10 @@ class Platformer extends Phaser.Scene {
         // BRING THESE BACK
         // add bgm + sfx
         this.bgm = this.sound.add("bgm", {loop: true});
-        this.walksfx = this.sound.add("walk_sfx", {loop: true, volume: 2});
-        this.foundsfx = this.sound.add("found", {loop: false, volume: 2});
-        this.collectsfx = this.sound.add("collectsfx", {loop: false, volume: 2});
+        this.bgm.setVolume(.1);
+        this.walksfx = this.sound.add("walk_sfx", {loop: true});
+        this.foundsfx = this.sound.add("found", {loop: false, volume: 1.25});
+        this.collectsfx = this.sound.add("collectsfx", {loop: false, volume: .4});
         this.bgm.play();
         this.walksfx.play();
         this.walksfx.pause();
@@ -216,7 +219,7 @@ class Platformer extends Phaser.Scene {
                 this.walksfx.resume();
             }
         }
-        else{           // if no input
+        else{           // no input or if mid animation
             my.sprite.player.body.setAccelerationX(0);
             my.vfx.walk.stop();
             this.walksfx.pause();
@@ -245,7 +248,6 @@ class Platformer extends Phaser.Scene {
 
         // start cutscene 0
         if(this.stage == 0 && my.sprite.player.x >= 2420){
-            
             this.stage += 0.5;
             this.cameras.main.stopFollow();
             this.cameras.main.pan(my.sprite.player.x+20, 427, 2000, "Sine.easeInOut");
@@ -296,6 +298,7 @@ class Platformer extends Phaser.Scene {
                 this.respawnYouAt(8491, 411);
                 my.sprite.you.resetFlip();
                 my.sprite.you.body.setMaxVelocity(0.00001);
+                my.sprite.you.anims.play('youStand');
             }
         }
 
