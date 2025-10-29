@@ -11,4 +11,5 @@ WASD or arrow keys to move
 ### Art Assets by [Kenney](https://kenney.nl/assets)
 ### BGM by [Nofu - 積乱雲と電信柱](https://youtu.be/wpfR9qBYwfQ)
 ### Programming and Level Design by Reece Talaro
+### Built in JavaScript with the Phaser 3 engine and Tiled
 ###### Originally developed for Jim Whitehead's SP2025 CMPM 120: Game Development Experience course
